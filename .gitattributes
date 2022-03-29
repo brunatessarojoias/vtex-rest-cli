@@ -1,0 +1,18 @@
+# Autodetect text files
+* text=auto
+
+# ...Unless the name matches the following
+# overriding patterns
+
+# Definitively text files 
+*.js text
+*.json text
+*.md text
+.env text
+.env.example text
+yarn.lock text
+
+# Ensure those won't be messed up with
+# Examples:
+*.jpg binary
+*.data binary
