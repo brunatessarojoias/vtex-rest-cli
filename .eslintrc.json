@@ -37,6 +37,11 @@
 				"blankLine": "always",
 				"prev": "*",
 				"next": "return"
+			},
+			{
+				"blankLine": "always",
+				"prev": "function",
+				"next": "*"
 			}
 		],
 		"no-console": "off",

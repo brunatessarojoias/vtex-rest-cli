@@ -9,5 +9,6 @@ function logEnvVar(envVar: string): void {
 
 	console.log(`'${envVar}' is not defined in process.env`);
 }
+
 logEnvVar("VTEX_ACCOUNT");
 logEnvVar("VTEX_ACCOUNT_NAME");
