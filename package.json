@@ -6,7 +6,8 @@
 	"scripts": {
 		"start": "ts-node ./src/app.ts",
 		"lint": "eslint ./src",
-		"lint:fix": "eslint ./src --fix"
+		"lint:fix": "eslint ./src --fix",
+		"format": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
 	},
 	"engines": {
 		"node": ">=16.0.0"

@@ -33,7 +33,11 @@
 				"prev": ["const", "let", "var"],
 				"next": ["const", "let", "var"]
 			},
-			{ "blankLine": "always", "prev": "*", "next": "return" }
+			{
+				"blankLine": "always",
+				"prev": "*",
+				"next": "return"
+			}
 		],
 		"no-console": "off",
 		"func-names": "off",
