@@ -1,0 +1,15 @@
+{
+	"extends": "@tsconfig/node16/tsconfig.json",
+	"compilerOptions": {
+		"lib": ["ES2021"],
+		"module": "ES2020",
+		"target": "ES2021",
+		"moduleResolution": "node",
+		"outDir": "dist"
+	},
+	"ts-node": {
+		"esm": true
+	},
+	"include": ["src"],
+	"exclude": ["node_modules"]
+}

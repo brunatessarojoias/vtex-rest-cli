@@ -1,0 +1,5 @@
+# folders
+dist
+
+# files
+**/*.js
