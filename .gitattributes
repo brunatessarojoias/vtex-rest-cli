@@ -8,7 +8,6 @@
 *.js text
 *.json text
 *.md text
-.env text
 .env.example text
 yarn.lock text
 
