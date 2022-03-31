@@ -1,0 +1,13 @@
+{
+	"version": "0.1.0",
+	"configurations": [
+		{
+			"name": "Debug app.ts",
+			"request": "launch",
+			"type": "node",
+			"cwd": "${workspaceRoot}",
+			"runtimeArgs": ["--loader", "ts-node/esm"],
+			"args": ["${workspaceRoot}/src/app.ts"]
+		}
+	]
+}
