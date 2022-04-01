@@ -1,14 +1,5 @@
-import "dotenv/config";
+import search from "@app/services/search";
 
-function logEnvVar(envVar: string): void {
-	if (envVar in process.env) {
-		const tmp = process.env[envVar];
+const response = await search();
 
-		return console.log(`${envVar}: ${tmp}`);
-	}
-
-	console.log(`'${envVar}' is not defined in process.env`);
-}
-
-logEnvVar("VTEX_ACCOUNT");
-logEnvVar("VTEX_ACCOUNT_NAME");
+console.log(response);
