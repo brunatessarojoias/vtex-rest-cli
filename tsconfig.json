@@ -2,11 +2,14 @@
 	"extends": "@tsconfig/node16/tsconfig.json",
 	"compilerOptions": {
 		"lib": ["ES2021"],
-		"module": "ES2020",
-		"target": "ES2021",
+		"module": "ES2022",
+		"target": "ES2022",
 		"moduleResolution": "node",
 		"outDir": "dist",
-		"baseUrl": "src"
+		"baseUrl": "src",
+		"paths": {
+			"@app/*": ["./*"]
+		}
 	},
 	"ts-node": {
 		"esm": true
