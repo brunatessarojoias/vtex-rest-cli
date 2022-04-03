@@ -11,9 +11,6 @@
 			"@app/*": ["./*"]
 		}
 	},
-	"ts-node": {
-		"esm": true
-	},
 	"include": ["src"],
 	"exclude": ["node_modules"]
 }

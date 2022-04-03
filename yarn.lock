@@ -1407,7 +1407,7 @@ to-regex-range@^5.0.1:
   dependencies:
     is-number "^7.0.0"
 
-ts-node@^10.7.0:
+ts-node@^10.4.0, ts-node@^10.7.0:
   version "10.7.0"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.7.0.tgz#35d503d0fab3e2baa672a0e94f4b40653c2463f5"
   integrity sha512-TbIGS4xgJoX2i3do417KSaep1uRAW/Lu+WAL2doDHC0D6ummjirVOXU5/7aiZotbQ5p1Zp9tP7U6cYhA0O7M8A==
@@ -1426,6 +1426,14 @@ ts-node@^10.7.0:
     v8-compile-cache-lib "^3.0.0"
     yn "3.1.1"
 
+ts-paths-esm-loader@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ts-paths-esm-loader/-/ts-paths-esm-loader-1.3.0.tgz#eb7e91c6b028b32d9bc7d7f210f302f9ff08ef57"
+  integrity sha512-pdX1fvQ7UukKnX1FixpGd6wfmKzWXqmgLE8Cl1Y7QeSiEvN9BpYa3umCw9YNuSJdSnf1XxVFUN2MFeIQs+V+LA==
+  dependencies:
+    ts-node "^10.4.0"
+    tsconfig-paths "^3.12.0"
+
 tsc-alias@^1.6.5:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/tsc-alias/-/tsc-alias-1.6.5.tgz#06127ff6bad25643467eba941768585935a023da"
@@ -1437,7 +1445,7 @@ tsc-alias@^1.6.5:
     mylas "^2.1.9"
     normalize-path "^3.0.0"
 
-tsconfig-paths@^3.11.0:
+tsconfig-paths@^3.11.0, tsconfig-paths@^3.12.0:
   version "3.14.1"
   resolved "https://registry.yarnpkg.com/tsconfig-paths/-/tsconfig-paths-3.14.1.tgz#ba0734599e8ea36c862798e920bcf163277b137a"
   integrity sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==
