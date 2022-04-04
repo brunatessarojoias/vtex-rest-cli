@@ -47,6 +47,7 @@
 		"no-console": "off",
 		"func-names": "off",
 		"no-process-exit": "off",
-		"object-shorthand": "off"
+		"object-shorthand": "off",
+		"max-len": ["error", { "comments": 100 }]
 	}
 }
