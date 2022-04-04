@@ -2,6 +2,8 @@ import "dotenv/config";
 import axios from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
+import { ENV, API } from "./constants";
+
 function getEnvVar(key: keyof NodeJS.ProcessEnv): string {
 	const value = process.env[key];
 
@@ -14,21 +16,21 @@ function getEnvVar(key: keyof NodeJS.ProcessEnv): string {
 	return value;
 }
 
-const VTEX_ACCOUNT = getEnvVar("VTEX_ACCOUNT");
-const VTEX_ENV = getEnvVar("VTEX_ENV");
-const VTEX_APP_KEY = getEnvVar("VTEX_APP_KEY");
-const VTEX_APP_TOKEN = getEnvVar("VTEX_APP_TOKEN");
-
 const config = {
-	baseURL: `https://${VTEX_ACCOUNT}.${VTEX_ENV}.com.br/api`,
+	baseURL: `https://${getEnvVar(ENV.VTEX_ACCOUNT)}.${getEnvVar(
+		ENV.VTEX_ENV
+	)}.com.br/api`,
 	headers: {
-		"X-VTEX-API-AppKey": VTEX_APP_KEY,
-		"X-VTEX-API-AppToken": VTEX_APP_TOKEN,
+		"X-VTEX-API-AppKey": getEnvVar(ENV.VTEX_APP_KEY),
+		"X-VTEX-API-AppToken": getEnvVar(ENV.VTEX_APP_TOKEN),
 		"Content-Type": "application/json",
 		Accept: "application/json",
 	},
+	timeout: API.TIMEOUT_IN_MILLISECONDS,
 };
 
-const api = axiosRateLimit(axios.create(config), { maxRPS: 5 });
+const api = axiosRateLimit(axios.create(config), {
+	maxRPS: API.MAX_REQUESTS_PER_MILLISECONDS,
+});
 
 export default api;
