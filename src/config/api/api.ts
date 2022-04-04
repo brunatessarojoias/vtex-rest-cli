@@ -3,18 +3,7 @@ import axios from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
 import { ENV, API } from "./constants";
-
-function getEnvVar(key: keyof NodeJS.ProcessEnv): string {
-	const value = process.env[key];
-
-	if (value === undefined) {
-		const message = `The environment variable "${key}" cannot be "undefined".`;
-
-		throw new Error(message);
-	}
-
-	return value;
-}
+import getEnvVar from "./utils/getEnvVar";
 
 const config = {
 	baseURL: `https://${getEnvVar(ENV.VTEX_ACCOUNT)}.${getEnvVar(
