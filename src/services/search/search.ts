@@ -1,6 +1,7 @@
 import api from "@app/config/api";
 import { API } from "@app/config/api/constants";
 import parseResources from "./utils/parseResources";
+import https from "https";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
@@ -19,6 +20,7 @@ export default async function search(from = 0, to = 49) {
 
 		const { headers, data } = await api(API_ENDPOINT, {
 			params: requestParameters,
+			httpsAgent: new https.Agent({ keepAlive: true }),
 		});
 
 		const isCachedResponse =
