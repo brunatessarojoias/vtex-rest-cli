@@ -6,7 +6,12 @@
 			"request": "launch",
 			"type": "node",
 			"cwd": "${workspaceRoot}",
-			"runtimeArgs": ["--loader", "ts-node/esm"],
+			"runtimeArgs": [
+				"--loader",
+				"ts-paths-esm-loader",
+				"--experimental-specifier-resolution",
+				"node"
+			],
 			"args": ["${workspaceRoot}/src/app.ts"]
 		}
 	]
