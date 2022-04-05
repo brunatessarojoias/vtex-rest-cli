@@ -1,11 +1,12 @@
 import "dotenv/config";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import axiosRateLimit from "axios-rate-limit";
 
 import { ENV, API } from "./constants";
 import getEnvVar from "./utils/getEnvVar";
+import paramsSerializer from "./utils/paramsSerializer";
 
-const config = {
+const config: AxiosRequestConfig = {
 	baseURL: `https://${getEnvVar(ENV.VTEX_ACCOUNT)}.${getEnvVar(
 		ENV.VTEX_ENV
 	)}.com.br/api`,
@@ -16,6 +17,7 @@ const config = {
 		Accept: "application/json",
 	},
 	timeout: API.TIMEOUT_IN_MILLISECONDS,
+	paramsSerializer: paramsSerializer,
 };
 
 const api = axiosRateLimit(axios.create(config), {
