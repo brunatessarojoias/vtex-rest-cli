@@ -24,9 +24,7 @@ export default async function search(from = 0, to = 49) {
 		});
 
 		const isCachedResponse =
-			headers["x-vtex-cache-status-janus-apicache"] === "HIT"
-				? true
-				: false;
+			headers["x-vtex-cache-status-janus-apicache"] === "HIT";
 
 		const resources = parseResources(headers.resources);
 		const hasMoreResults = resources.tail < resources.originTail;
