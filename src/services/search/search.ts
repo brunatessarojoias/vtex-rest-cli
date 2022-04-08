@@ -1,25 +1,21 @@
-import api from "@app/config/api";
-import { API } from "@app/config/api/constants";
-import parseResources from "./utils/parseResources";
 import https from "https";
+import api from "@app/config/api";
+import parseParameters from "./utils/parseParameters";
+import parseResources from "./utils/parseResources";
+import type { SearchOptions } from "./searchTypes";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
-export default async function search(from = 0, to = 49) {
-	try {
-		const requestParameters = {
-			_from: from,
-			_to: to < from ? from : to,
-		};
+export default async function search(searchOptions?: SearchOptions) {
+	console.log("searchOptions", searchOptions);
 
-		if (requestParameters._from >= API.SEARCH_PAGINATION_THRESHOLD) {
-			throw new RangeError(
-				"Request parameter '_from' can't be greater than 2500."
-			);
-		}
+	try {
+		const parsedSearchOptions = await parseParameters(searchOptions);
 
 		const { headers, data } = await api(API_ENDPOINT, {
-			params: requestParameters,
+			...((parsedSearchOptions && {
+				params: parsedSearchOptions,
+			}) as unknown as object),
 			httpsAgent: new https.Agent({ keepAlive: true }),
 		});
 
