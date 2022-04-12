@@ -1,50 +1,55 @@
-import { array, boolean, lazy, number, object, string, tuple } from "yup";
+import Joi from "joi";
 import { API } from "@app/config/api/constants";
 
-export const searchFiltersSchema = object({
-	brand: string(),
-	category: number(),
-	collectionId: number(),
-	ean: string(),
-	fullText: string(),
-	priceRange: object({
-		from: number().optional(),
-		to: number().notRequired(),
-	}).notRequired(),
-	productId: number(),
-	referenceId: number(),
-	salesChannel: array().of(
-		tuple([
-			number().label("salesChannelId"),
-			boolean().label("salesChannelIdEnabled"),
-		])
+export const searchFiltersSchema = Joi.object({
+	brand: Joi.string(),
+	category: Joi.number().integer(),
+	collectionId: Joi.number().integer(),
+	ean: Joi.string(),
+	fullText: Joi.string(),
+	priceRange: Joi.object({
+		from: Joi.number().integer(),
+		to: Joi.number().integer(),
+	}),
+	productId: Joi.number().integer(),
+	referenceId: Joi.number().integer(),
+	salesChannel: Joi.array().items(
+		Joi.array()
+			.length(2)
+			.ordered(
+				Joi.number().integer().label("salesChannelId"),
+				Joi.boolean().label("salesChannelIdEnabled")
+			)
 	),
-	seller: number(),
-	skuId: number(),
-	specification: array().of(
-		tuple([
-			number().label("specificationId"),
-			string().label("specificationValue"),
-		])
+	seller: Joi.number().integer(),
+	skuId: Joi.number().integer(),
+	specification: Joi.array().items(
+		Joi.array()
+			.length(2)
+			.ordered(
+				Joi.number().integer().label("specificationId"),
+				Joi.string().label("specificationValue")
+			)
 	),
 });
 
 // prettier-ignore
-export const sortAscendingSchema = string()
-	.matches(/^ASC$/i)
-	.uppercase();
+export const sortAscendingSchema = Joi.string()
+	.pattern(/^ASC$/i)
+	.uppercase()
+	.example('asc, ASC')
 
-export const sortDescendingSchema = string()
-	.matches(/^DESC$/i)
-	.uppercase();
+export const sortDescendingSchema = Joi.string()
+	.pattern(/^DESC$/i)
+	.uppercase()
+	.example("desc, DESC");
 
-export const sortingOrderSchema = lazy((value: string) => {
-	if (/^a/i.test(value)) return sortAscendingSchema;
+export const sortingOrderSchema = Joi.alternatives()
+	.try(sortAscendingSchema, sortDescendingSchema)
+	.match("one")
+	.example("asc/ASC, desc/DESC");
 
-	return sortDescendingSchema;
-});
-
-export const searchSortingSchema = object({
+export const searchSortingSchema = Joi.object({
 	bestDiscounts: sortDescendingSchema,
 	bestReviews: sortDescendingSchema,
 	name: sortingOrderSchema,
@@ -54,18 +59,20 @@ export const searchSortingSchema = object({
 	topSelling: sortDescendingSchema,
 });
 
-export const searchPaginationSchema = object({
-	from: number()
-		.label("Search pagination 'from'")
+export const searchPaginationSchema = Joi.object({
+	from: Joi.number()
+		.integer()
+		.min(0)
 		.max(API.SEARCH_PAGINATION_THRESHOLD)
 		.default(0),
-	to: number()
-		.label("Search pagination 'to'")
+	to: Joi.number()
+		.integer()
+		.min(0)
 		.max(API.SEARCH_PAGINATION_THRESHOLD)
 		.default(49),
-}).transformKeys(key => `_${key}`);
+});
 
-export const searchOptionsSchema = object({
+export const searchOptionsSchema = Joi.object({
 	pagination: searchPaginationSchema,
 	filters: searchFiltersSchema,
 	sorting: searchSortingSchema,
