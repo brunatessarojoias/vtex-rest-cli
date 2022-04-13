@@ -22,14 +22,18 @@ export interface SearchFilters {
 	specification?: Array<[number, string]>;
 }
 
+type SortAscending = "asc" | "ASC";
+type SortDescending = "desc" | "DESC";
+type SortingOrder = SortAscending | SortDescending;
+
 export interface SearchSorting {
-	bestDiscounts?: string;
-	bestReviews?: string;
-	name?: string;
-	price?: string;
-	releaseDate?: string;
-	score?: string;
-	topSelling?: string;
+	bestDiscounts?: SortDescending;
+	bestReviews?: SortDescending;
+	name?: SortingOrder;
+	price?: SortingOrder;
+	releaseDate?: SortDescending;
+	score?: SortDescending;
+	topSelling?: SortDescending;
 }
 
 export interface SearchPagination {
