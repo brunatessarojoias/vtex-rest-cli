@@ -58,6 +58,10 @@ export const searchSortingSchema = Joi.object({
 	topSelling: sortDescendingSchema,
 });
 
+/**
+ ** TODO: Add validation for 'to' key, if its value
+ ** is less than 'from', replace value with 'from' value
+ */
 export const searchPaginationSchema = Joi.object({
 	from: Joi.number()
 		.integer()
