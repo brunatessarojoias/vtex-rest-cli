@@ -36,7 +36,7 @@ export const queryParametersMap = {
 			value: "alternateIds_RefId:",
 		},
 		salesChannel: {
-			parameter: "",
+			parameter: "fq",
 			interpolation: {
 				key: "a",
 				value: "b",
