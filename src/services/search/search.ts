@@ -17,8 +17,8 @@ export default async function search(searchOptions?: SearchOptions) {
 
 		const { headers, data } = await api(API_ENDPOINT, apiHeaders);
 
-		// eslint-disable-next-line prettier/prettier
-		const isCachedResponse = headers["x-vtex-cache-status-janus-apicache"] === "HIT";
+		const isCachedResponse =
+			headers["x-vtex-cache-status-janus-apicache"] === "HIT";
 
 		const resources = parseResources(headers.resources);
 		const hasMoreResults = resources.tail < resources.originTail;
