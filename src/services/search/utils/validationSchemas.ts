@@ -2,8 +2,8 @@ import Joi from "joi";
 import { API } from "@app/config/api/constants";
 
 export const searchFiltersSchema = Joi.object({
-	brand: Joi.string(),
-	category: Joi.number().integer(),
+	brandId: Joi.number().integer(),
+	categoryId: Joi.number().integer(),
 	collectionId: Joi.number().integer(),
 	ean: Joi.string(),
 	fullText: Joi.string(),
@@ -13,23 +13,19 @@ export const searchFiltersSchema = Joi.object({
 	}),
 	productId: Joi.number().integer(),
 	referenceId: Joi.number().integer(),
-	salesChannel: Joi.array().items(
-		Joi.array()
-			.length(2)
-			.ordered(
-				Joi.number().integer().label("salesChannelId"),
-				Joi.boolean().label("salesChannelIdEnabled")
-			)
+	salesChannelIds: Joi.object({
+		id: Joi.boolean(),
+	}).pattern(
+		Joi.number().integer().label("salesChannelId"),
+		Joi.boolean().label("salesChannelEnabled")
 	),
-	seller: Joi.number().integer(),
+	sellerId: Joi.number().integer(),
 	skuId: Joi.number().integer(),
-	specification: Joi.array().items(
-		Joi.array()
-			.length(2)
-			.ordered(
-				Joi.number().integer().label("specificationId"),
-				Joi.string().label("specificationValue")
-			)
+	specifications: Joi.object({
+		id: Joi.boolean(),
+	}).pattern(
+		Joi.number().integer().label("specificationId"),
+		Joi.string().label("specificationValue")
 	),
 });
 
@@ -76,7 +72,7 @@ export const searchPaginationSchema = Joi.object({
 }).default();
 
 export const searchOptionsSchema = Joi.object({
-	pagination: searchPaginationSchema,
 	filters: searchFiltersSchema,
 	sorting: searchSortingSchema,
+	pagination: searchPaginationSchema,
 }).default();

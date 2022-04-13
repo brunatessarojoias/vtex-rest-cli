@@ -5,8 +5,8 @@ export interface SearchOptions {
 }
 
 export interface SearchFilters {
-	brand?: string;
-	category?: number;
+	brandId?: number;
+	categoryId?: number;
 	collectionId?: number;
 	ean?: string;
 	fullText?: string;
@@ -16,10 +16,14 @@ export interface SearchFilters {
 	};
 	productId?: number;
 	referenceId?: number;
-	salesChannel?: Array<[number, boolean]>;
-	seller?: number;
+	salesChannelIds?: {
+		[key: number]: boolean;
+	};
+	sellerId?: number;
 	skuId?: number;
-	specification?: Array<[number, string]>;
+	specifications?: {
+		[key: number]: string;
+	};
 }
 
 type SortAscending = "asc" | "ASC";
