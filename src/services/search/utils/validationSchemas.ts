@@ -33,11 +33,10 @@ export const searchFiltersSchema = Joi.object({
 	),
 });
 
-// prettier-ignore
 export const sortAscendingSchema = Joi.string()
 	.pattern(/^ASC$/i)
 	.uppercase()
-	.example('asc, ASC')
+	.example("asc, ASC");
 
 export const sortDescendingSchema = Joi.string()
 	.pattern(/^DESC$/i)
@@ -70,10 +69,10 @@ export const searchPaginationSchema = Joi.object({
 		.min(0)
 		.max(API.SEARCH_PAGINATION_THRESHOLD)
 		.default(49),
-});
+}).default();
 
 export const searchOptionsSchema = Joi.object({
 	pagination: searchPaginationSchema,
 	filters: searchFiltersSchema,
 	sorting: searchSortingSchema,
-});
+}).default();

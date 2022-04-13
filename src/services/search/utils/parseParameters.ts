@@ -1,4 +1,3 @@
-import Joi from "joi";
 import { searchOptionsSchema } from "./validationSchemas";
 import type { SearchOptions } from "../searchTypes";
 
@@ -9,9 +8,8 @@ export default function parseParameters(parameters?: SearchOptions) {
 		stripUnknown: true,
 	};
 
-	const validatedParameters = Joi.attempt(
+	const { value: validatedParameters } = searchOptionsSchema.validate(
 		parameters,
-		searchOptionsSchema,
 		validationOptions
 	);
 
