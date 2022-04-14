@@ -1,26 +1,60 @@
-export const queryParametersMap = {
+import {
+	SearchFilters,
+	SearchPagination,
+	SearchSorting,
+} from "../../searchTypes";
+
+enum QueryParameter {
+	Default = "fq",
+	FullText = "ft",
+	Ordination = "O",
+	PaginationFrom = "_from",
+	PaginationTo = "_to",
+}
+
+type QueryParameterOptions = {
+	parameter: QueryParameter;
+	interpolation?: {
+		[interpolationVariable: string]: string;
+	};
+	value?: string;
+};
+
+type QueryParametersMap = {
+	filters: {
+		[searchOptionKey in keyof Required<SearchFilters>]: QueryParameterOptions;
+	};
+	sorting: {
+		[searchOptionKey in keyof Required<SearchSorting>]: QueryParameterOptions;
+	};
+	pagination: {
+		[searchOptionKey in keyof Required<SearchPagination>]: QueryParameterOptions;
+	};
+};
+
+export const queryParametersMap: QueryParametersMap = {
 	filters: {
 		brandId: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "B:/",
 		},
 		categoryId: {
-			paramater: "fq",
+			parameter: QueryParameter.Default,
 			value: "C:/",
 		},
 		collectionId: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "productClusterIds:",
 		},
 		ean: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "alternateIds_Ean:",
 		},
 		fullText: {
-			parameter: "ft",
+			parameter: QueryParameter.FullText,
 		},
 		priceRange: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			interpolation: {
 				from: "a",
 				to: "b",
@@ -28,31 +62,31 @@ export const queryParametersMap = {
 			value: "P:[{a} TO {b}]",
 		},
 		productId: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "productId:",
 		},
 		referenceId: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "alternateIds_RefId:",
 		},
-		salesChannel: {
-			parameter: "fq",
+		salesChannelIds: {
+			parameter: QueryParameter.Default,
 			interpolation: {
 				key: "a",
 				value: "b",
 			},
 			value: "isAvailablePerSalesChannel_{a}:{b}",
 		},
-		seller: {
-			parameter: "fq",
+		sellerId: {
+			parameter: QueryParameter.Default,
 			value: "sellerId:",
 		},
 		skuId: {
-			parameter: "fq",
+			parameter: QueryParameter.Default,
 			value: "skuId:",
 		},
-		specification: {
-			parameter: "fq",
+		specifications: {
+			parameter: QueryParameter.Default,
 			interpolation: {
 				key: "a",
 				value: "b",
@@ -62,40 +96,40 @@ export const queryParametersMap = {
 	},
 	sorting: {
 		bestDiscounts: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByBestDiscount",
 		},
 		bestReviews: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByReviewRate",
 		},
 		name: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByName",
 		},
 		price: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByPrice",
 		},
 		releaseDate: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByReleaseDate",
 		},
 		score: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByScore",
 		},
 		topSelling: {
-			parameter: "O",
+			parameter: QueryParameter.Ordination,
 			value: "OrderByTopSale",
 		},
 	},
 	pagination: {
 		from: {
-			parameter: "_from",
+			parameter: QueryParameter.PaginationFrom,
 		},
 		to: {
-			parameter: "_to",
+			parameter: QueryParameter.PaginationTo,
 		},
 	},
 };
