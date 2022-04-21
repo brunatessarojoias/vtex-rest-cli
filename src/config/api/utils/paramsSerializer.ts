@@ -1,21 +1,22 @@
-type ParameterValue = string | number;
-type ParametersObject = Record<string, ParameterValue>;
+type ParameterValues = Array<string>;
+type ParametersObject = {
+	[parameterId: string]: ParameterValues;
+};
 
-// TODO - Handle repeated parameters
-// ? https://stackoverflow.com/questions/42898009/multiple-fields-with-same-key-in-query-params-axios-request
-export default function paramsSerializer(params: string | ParametersObject) {
+export default function paramsSerializer(params: ParametersObject | string) {
 	if (typeof params === "string") {
 		return encodeURI(params);
 	}
 
-	const serializedParams = new URLSearchParams(
-		Object.fromEntries(
-			Object.entries(params).map(([key, value]) => [
-				key,
-				encodeURIComponent(value),
-			])
-		)
-	).toString();
+	const urlParams = new URLSearchParams();
 
-	return serializedParams;
+	Object.entries(params).forEach(([paramId, paramValues]) => {
+		paramValues.forEach(value =>
+			urlParams.append(paramId, encodeURI(value))
+		);
+	});
+
+	const queryParametersAsString = urlParams.toString();
+
+	return queryParametersAsString;
 }
