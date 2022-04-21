@@ -6,10 +6,12 @@ import type { SearchOptions } from "./searchTypes";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
-export default async function search(searchOptions?: SearchOptions) {
+export default async function search(searchOptions?: Partial<SearchOptions>) {
 	try {
-		//* Don't check for undefined 'searchOptions' because
-		//* 'buildQueryParams' returns default values
+		/*
+		 ! Don't check for undefined 'searchOptions' because
+		 ! 'buildQueryParams' returns default values
+		 */
 		const queryParams = buildQueryParams(searchOptions);
 
 		const apiHeaders = {
