@@ -2,7 +2,9 @@ import { searchOptionsSchema } from "./validationSchemas";
 import type { SearchOptions } from "../../searchTypes";
 
 // TODO - Handle Joi errors
-export default function parseInputParameters(inputParameters?: SearchOptions) {
+export default function validateInputSchema(
+	inputParameters?: Partial<SearchOptions>
+): SearchOptions {
 	const validationOptions = {
 		convert: true,
 		stripUnknown: true,
