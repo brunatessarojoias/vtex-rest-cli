@@ -13,19 +13,19 @@ export const searchFiltersSchema = Joi.object({
 	}),
 	productId: Joi.number().integer(),
 	referenceId: Joi.number().integer(),
-	salesChannelIds: Joi.object({
-		id: Joi.boolean(),
-	}).pattern(
-		Joi.number().integer().label("salesChannelId"),
-		Joi.boolean().label("salesChannelEnabled")
+	salesChannels: Joi.array().items(
+		Joi.object({
+			id: Joi.number().integer(),
+			available: Joi.boolean(),
+		})
 	),
 	sellerId: Joi.number().integer(),
 	skuId: Joi.number().integer(),
-	specifications: Joi.object({
-		id: Joi.boolean(),
-	}).pattern(
-		Joi.number().integer().label("specificationId"),
-		Joi.string().label("specificationValue")
+	specifications: Joi.array().items(
+		Joi.object({
+			id: Joi.number().integer(),
+			value: Joi.alternatives().try(Joi.string(), Joi.number().integer()),
+		})
 	),
 });
 
@@ -55,8 +55,8 @@ export const searchSortingSchema = Joi.object({
 });
 
 /*
- * // TODO Add validation for 'to' key, if its value
- * is less than 'from', replace value with 'from' value
+ * // TODO* Add validation for 'to' key, if its value
+ * // is less than 'from', replace its value with 'from
  */
 export const searchPaginationSchema = Joi.object({
 	from: Joi.number()
