@@ -1,36 +1,60 @@
-export interface SearchOptions {
-	filters?: SearchFilters;
-	sorting?: SearchSorting;
-	pagination?: SearchPagination;
-}
+// TODO - Generate typings dynamically from Joi schemas
 
-export interface SearchFilters {
+export type SearchOptions = {
+	[type: string]: SearchFilters | SearchSorting | SearchPagination;
+	filters: SearchFilters;
+	sorting: SearchSorting;
+	pagination: SearchPagination;
+};
+
+type CommonSearchOptionsValues = string | number | boolean;
+
+export type CommonSearchOptionsValuesAsObject = {
+	[id: string]: CommonSearchOptionsValues;
+};
+
+export type CommonSearchOptionsValuesAsArray =
+	Array<CommonSearchOptionsValuesAsObject>;
+
+export type ValidSearchOptionsValues =
+	| CommonSearchOptionsValues
+	| CommonSearchOptionsValuesAsObject
+	| CommonSearchOptionsValuesAsArray;
+
+type SearchOptionTypeBase = {
+	[id: string]: ValidSearchOptionsValues;
+};
+
+export type SearchFilters = SearchOptionTypeBase & {
 	brandId?: number;
 	categoryId?: number;
 	collectionId?: number;
 	ean?: string;
 	fullText?: string;
 	priceRange?: {
+		[param: string]: number;
 		from: number;
 		to: number;
 	};
 	productId?: number;
 	referenceId?: number;
-	salesChannelIds?: {
-		[key: number]: boolean;
-	};
+	salesChannels?: Array<{
+		id: number;
+		available: boolean;
+	}>;
 	sellerId?: number;
 	skuId?: number;
-	specifications?: {
-		[key: number]: string;
-	};
-}
+	specifications?: Array<{
+		id: number;
+		value: string | number;
+	}>;
+};
 
 type SortAscending = "asc" | "ASC";
 type SortDescending = "desc" | "DESC";
 type SortingOrder = SortAscending | SortDescending;
 
-export interface SearchSorting {
+export type SearchSorting = SearchOptionTypeBase & {
 	bestDiscounts?: SortDescending;
 	bestReviews?: SortDescending;
 	name?: SortingOrder;
@@ -38,9 +62,9 @@ export interface SearchSorting {
 	releaseDate?: SortDescending;
 	score?: SortDescending;
 	topSelling?: SortDescending;
-}
+};
 
-export interface SearchPagination {
+export type SearchPagination = SearchOptionTypeBase & {
 	from?: number;
 	to?: number;
-}
+};
