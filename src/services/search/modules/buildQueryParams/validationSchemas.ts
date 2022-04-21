@@ -16,7 +16,7 @@ export const searchFiltersSchema = Joi.object({
 	salesChannels: Joi.array().items(
 		Joi.object({
 			id: Joi.number().integer(),
-			available: Joi.boolean(),
+			available: Joi.boolean().cast("number"),
 		})
 	),
 	sellerId: Joi.number().integer(),
