@@ -1,10 +1,6 @@
-import {
-	SearchFilters,
-	SearchPagination,
-	SearchSorting,
-} from "../../searchTypes";
+import { SearchOptions } from "../../searchTypes";
 
-enum QueryParameter {
+export enum QueryParameters {
 	Default = "fq",
 	FullText = "ft",
 	Ordination = "O",
@@ -12,124 +8,111 @@ enum QueryParameter {
 	PaginationTo = "_to",
 }
 
-type QueryParameterOptions = {
-	parameter: QueryParameter;
-	interpolation?: {
-		[interpolationVariable: string]: string;
-	};
-	value?: string;
+export type QueryParameterOptions = {
+	parameter: QueryParameters;
+	template?: string;
+	interpolateValues?: boolean;
 };
 
-type QueryParametersMap = {
-	filters: {
-		[searchOptionKey in keyof Required<SearchFilters>]: QueryParameterOptions;
-	};
-	sorting: {
-		[searchOptionKey in keyof Required<SearchSorting>]: QueryParameterOptions;
-	};
-	pagination: {
-		[searchOptionKey in keyof Required<SearchPagination>]: QueryParameterOptions;
-	};
+export type SearchOptionTypeKey<T> = {
+	[key in keyof Required<T>]: QueryParameterOptions;
+};
+
+export type QueryParametersMap = {
+	[searchOptionType in keyof Required<SearchOptions>]: SearchOptionTypeKey<
+		SearchOptions[searchOptionType]
+	>;
 };
 
 export const queryParametersMap: QueryParametersMap = {
 	filters: {
 		brandId: {
-			parameter: QueryParameter.Default,
-			value: "B:/",
+			parameter: QueryParameters.Default,
+			template: "B:",
 		},
 		categoryId: {
-			parameter: QueryParameter.Default,
-			value: "C:/",
+			parameter: QueryParameters.Default,
+			template: "C:",
 		},
 		collectionId: {
-			parameter: QueryParameter.Default,
-			value: "productClusterIds:",
+			parameter: QueryParameters.Default,
+			template: "productClusterIds:",
 		},
 		ean: {
-			parameter: QueryParameter.Default,
-			value: "alternateIds_Ean:",
+			parameter: QueryParameters.Default,
+			template: "alternateIds_Ean:",
 		},
 		fullText: {
-			parameter: QueryParameter.FullText,
+			parameter: QueryParameters.FullText,
 		},
 		priceRange: {
-			parameter: QueryParameter.Default,
-			interpolation: {
-				from: "a",
-				to: "b",
-			},
-			value: "P:[{a} TO {b}]",
+			parameter: QueryParameters.Default,
+			template: "P:[{from} TO {to}]",
+			interpolateValues: true,
 		},
 		productId: {
-			parameter: QueryParameter.Default,
-			value: "productId:",
+			parameter: QueryParameters.Default,
+			template: "productId:",
 		},
 		referenceId: {
-			parameter: QueryParameter.Default,
-			value: "alternateIds_RefId:",
+			parameter: QueryParameters.Default,
+			template: "alternateIds_RefId:",
 		},
-		salesChannelIds: {
-			parameter: QueryParameter.Default,
-			interpolation: {
-				key: "a",
-				value: "b",
-			},
-			value: "isAvailablePerSalesChannel_{a}:{b}",
+		salesChannels: {
+			parameter: QueryParameters.Default,
+			template: "isAvailablePerSalesChannel_{id}:{available}",
+			interpolateValues: true,
 		},
 		sellerId: {
-			parameter: QueryParameter.Default,
-			value: "sellerId:",
+			parameter: QueryParameters.Default,
+			template: "sellerId:",
 		},
 		skuId: {
-			parameter: QueryParameter.Default,
-			value: "skuId:",
+			parameter: QueryParameters.Default,
+			template: "skuId:",
 		},
 		specifications: {
-			parameter: QueryParameter.Default,
-			interpolation: {
-				key: "a",
-				value: "b",
-			},
-			value: "specificationFilter_{a}:{b}",
+			parameter: QueryParameters.Default,
+			template: "specificationFilter_{id}:{value}",
+			interpolateValues: true,
 		},
 	},
 	sorting: {
 		bestDiscounts: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByBestDiscount",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByBestDiscount",
 		},
 		bestReviews: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByReviewRate",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByReviewRate",
 		},
 		name: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByName",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByName",
 		},
 		price: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByPrice",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByPrice",
 		},
 		releaseDate: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByReleaseDate",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByReleaseDate",
 		},
 		score: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByScore",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByScore",
 		},
 		topSelling: {
-			parameter: QueryParameter.Ordination,
-			value: "OrderByTopSale",
+			parameter: QueryParameters.Ordination,
+			template: "OrderByTopSale",
 		},
 	},
 	pagination: {
 		from: {
-			parameter: QueryParameter.PaginationFrom,
+			parameter: QueryParameters.PaginationFrom,
 		},
 		to: {
-			parameter: QueryParameter.PaginationTo,
+			parameter: QueryParameters.PaginationTo,
 		},
 	},
 };
