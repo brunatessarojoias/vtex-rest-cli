@@ -2,11 +2,13 @@ import https from "https";
 import api from "@app/config/api";
 import buildQueryParams from "./modules/buildQueryParams";
 import parseResources from "./utils/parseResources";
-import type { SearchOptions } from "./search.types";
+import type { SearchOptions, SearchResult } from "./search.types";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
-export default async function search(searchOptions?: Partial<SearchOptions>) {
+export default async function search(
+	searchOptions?: Partial<SearchOptions>
+): Promise<SearchResult> {
 	try {
 		/*
 		 ! Don't check for undefined 'searchOptions' because
@@ -21,23 +23,26 @@ export default async function search(searchOptions?: Partial<SearchOptions>) {
 
 		const { headers, data } = await api(API_ENDPOINT, apiHeaders);
 
-		const isCachedResponse =
-			headers["x-vtex-cache-status-janus-apicache"] === "HIT";
-
 		const resources = parseResources(headers.resources);
 		const hasMoreResults = resources.tail < resources.originTail;
 
 		const result = {
 			data,
 			metadata: {
-				isCachedResponse,
-				hasMoreResults,
 				resources,
+				hasMoreResults,
 			},
 		};
 
 		return result;
 	} catch (err) {
+		// TODO - Handle Axios and VTEX errors
 		console.error(err);
+
+		/*
+		 ? Temporary fix:
+		 ? throw 'err' after catch to prevent undefined return
+		 */
+		throw err;
 	}
 }
