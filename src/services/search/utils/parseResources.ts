@@ -1,8 +1,8 @@
-interface ParsedResources {
+export type ParsedResources = {
 	head: number;
 	tail: number;
 	originTail: number;
-}
+};
 
 export default function parseResources(
 	resourcesHeader: string
