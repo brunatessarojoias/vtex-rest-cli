@@ -1,5 +1,5 @@
 import { searchOptionsSchema } from "./validationSchemas";
-import type { SearchOptions } from "../../searchTypes";
+import type { SearchOptions } from "../../search.types";
 
 // TODO - Handle Joi errors
 export default function validateInputSchema(

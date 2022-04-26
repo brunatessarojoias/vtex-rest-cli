@@ -1,4 +1,4 @@
-import { SearchOptions } from "../../searchTypes";
+import { SearchOptions } from "../../search.types";
 
 export enum QueryParameters {
 	Default = "fq",

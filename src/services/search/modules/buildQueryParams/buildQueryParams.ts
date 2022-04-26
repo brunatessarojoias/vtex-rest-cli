@@ -2,7 +2,7 @@ import type {
 	SearchOptions,
 	CommonSearchOptionsValuesAsObject,
 	ValidSearchOptionsValues,
-} from "../../searchTypes";
+} from "../../search.types";
 import type { QueryParameters } from "./queryParametersMap";
 import validateInputSchema from "./validateInputSchema";
 import { queryParametersMap } from "./queryParametersMap";

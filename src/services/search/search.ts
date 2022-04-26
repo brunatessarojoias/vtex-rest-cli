@@ -2,7 +2,7 @@ import https from "https";
 import api from "@app/config/api";
 import buildQueryParams from "./modules/buildQueryParams";
 import parseResources from "./utils/parseResources";
-import type { SearchOptions } from "./searchTypes";
+import type { SearchOptions } from "./search.types";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
