@@ -1,4 +1,6 @@
-// TODO - Generate typings dynamically from Joi schemas
+import type { ParsedResources } from "./utils/parseResources";
+
+// TODO? - Generate typings dynamically from Joi schemas
 
 export type SearchOptions = {
 	[type: string]: SearchFilters | SearchSorting | SearchPagination;
@@ -67,4 +69,13 @@ export type SearchSorting = SearchOptionTypeBase & {
 export type SearchPagination = SearchOptionTypeBase & {
 	from?: number;
 	to?: number;
+};
+
+// TODO - Type 'data' values (VTEX Catalog's product)
+export type SearchResult = {
+	data: unknown[];
+	metadata: {
+		hasMoreResults: boolean;
+		resources: ParsedResources;
+	};
 };
