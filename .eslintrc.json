@@ -20,7 +20,10 @@
 	"rules": {
 		"prettier/prettier": "error",
 		"@typescript-eslint/consistent-type-definitions": "off",
-		"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-unused-vars": [
+			"error",
+			{ "argsIgnorePattern": "^_" }
+		],
 		"padding-line-between-statements": [
 			"error",
 			{
