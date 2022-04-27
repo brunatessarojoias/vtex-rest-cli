@@ -1,4 +1,4 @@
-import search from "@app/services/search";
+import { search } from "@app/services/search";
 
 const response = await search();
 
