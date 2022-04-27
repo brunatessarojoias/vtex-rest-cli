@@ -29,9 +29,7 @@ export default async function searchAll(
 					API.SEARCH_PAGINATION_MAX_INTERVAL - 1;
 
 				const updatedFrom =
-					requestIteration === 1
-						? initialTail + 1
-						: initialTail * requestIteration + requestIteration;
+					initialTail * requestIteration + requestIteration;
 
 				const updatedTo = updatedFrom + paginationInterval;
 
