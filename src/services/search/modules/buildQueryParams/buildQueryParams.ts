@@ -6,22 +6,9 @@ import type {
 import type { QueryParameters } from "./queryParametersMap";
 import validateInputSchema from "./validateInputSchema";
 import { queryParametersMap } from "./queryParametersMap";
+import applyVariablesInterpolation from "../../utils/applyVariablesInterpolation";
 
 type QueryParams = Record<QueryParameters, Array<string>>;
-
-function applyVariablesInterpolation(
-	inputString: string,
-	interpolationValues: CommonSearchOptionsValuesAsObject
-) {
-	Object.entries(interpolationValues).forEach(([variable, replacement]) => {
-		if (replacement === undefined)
-			throw new TypeError("variable 'replacement' can't be undefined");
-
-		inputString = inputString.replace(`{${variable}}`, `${replacement}`);
-	});
-
-	return inputString;
-}
 
 export default function buildQueryParams(
 	inputParameters?: Partial<SearchOptions>
@@ -45,8 +32,12 @@ export default function buildQueryParams(
 						temporaryQueryParams[parameter]?.push(paramValue);
 					};
 
-					const { template, interpolateValues } =
-						queryParametersMap[searchOptionTypeKey][optionName];
+					const {
+						template,
+						interpolateValues,
+						optionalVariables,
+						variableDivider,
+					} = queryParametersMap[searchOptionTypeKey][optionName];
 
 					const paramMapHasTemplate = !!template;
 
@@ -59,10 +50,13 @@ export default function buildQueryParams(
 						if (paramMapHasTemplate && !interpolateValues)
 							return addParameterValue(`${template}${value}`);
 
-						const interpolatedValue = applyVariablesInterpolation(
-							template as string,
-							value as CommonSearchOptionsValuesAsObject
-						);
+						const interpolatedValue = applyVariablesInterpolation({
+							inputString: template as string,
+							interpolationValues:
+								value as CommonSearchOptionsValuesAsObject,
+							optionalVariables,
+							variableDivider,
+						});
 
 						return addParameterValue(interpolatedValue);
 					};

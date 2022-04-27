@@ -3,7 +3,11 @@ import { API } from "@app/config/api/constants";
 
 export const searchFiltersSchema = Joi.object({
 	brandId: Joi.number().integer(),
-	categoryId: Joi.number().integer(),
+	categoryId: Joi.object({
+		department: Joi.number().integer().required(),
+		category: Joi.number().integer(),
+		subcategory: Joi.number().integer(),
+	}),
 	collectionId: Joi.number().integer(),
 	ean: Joi.string(),
 	fullText: Joi.string(),

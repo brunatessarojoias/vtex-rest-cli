@@ -29,7 +29,11 @@ type SearchOptionTypeBase = {
 
 export type SearchFilters = SearchOptionTypeBase & {
 	brandId?: number;
-	categoryId?: number;
+	categoryId?: {
+		department: number;
+		category?: number;
+		subcategory?: number;
+	};
 	collectionId?: number;
 	ean?: string;
 	fullText?: string;

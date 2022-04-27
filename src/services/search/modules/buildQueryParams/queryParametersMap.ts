@@ -12,6 +12,8 @@ export type QueryParameterOptions = {
 	parameter: QueryParameters;
 	template?: string;
 	interpolateValues?: boolean;
+	optionalVariables?: Array<string>;
+	variableDivider?: string;
 };
 
 export type SearchOptionTypeKey<T> = {
@@ -32,7 +34,10 @@ export const queryParametersMap: QueryParametersMap = {
 		},
 		categoryId: {
 			parameter: QueryParameters.Default,
-			template: "C:",
+			template: "C:/{department}/{category}/{subcategory}",
+			interpolateValues: true,
+			optionalVariables: ["category", "subcategory"],
+			variableDivider: "/",
 		},
 		collectionId: {
 			parameter: QueryParameters.Default,
