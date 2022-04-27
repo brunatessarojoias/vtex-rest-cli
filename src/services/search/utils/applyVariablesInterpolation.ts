@@ -18,11 +18,12 @@ export default function applyVariablesInterpolation({
 			if (interpolationValues[optionalVariable] === undefined) {
 				delete interpolationValues[optionalVariable];
 
-				const variableToRemove = `${
-					variableDivider ? variableDivider : ""
-				}{${optionalVariable}}`;
+				inputString = inputString.replace(`{${optionalVariable}}`, "");
 
-				inputString = inputString.replace(variableToRemove, "");
+				inputString = inputString.replace(
+					`${variableDivider}`.repeat(2),
+					`${variableDivider}`
+				);
 			}
 		});
 	}

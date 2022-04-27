@@ -34,7 +34,7 @@ export const queryParametersMap: QueryParametersMap = {
 		},
 		categoryId: {
 			parameter: QueryParameters.Default,
-			template: "C:/{department}/{category}/{subcategory}",
+			template: "C:/{department}/{category}/{subcategory}/",
 			interpolateValues: true,
 			optionalVariables: ["category", "subcategory"],
 			variableDivider: "/",
