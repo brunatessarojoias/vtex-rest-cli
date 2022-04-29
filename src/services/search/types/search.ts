@@ -1,4 +1,5 @@
-import type { ParsedResources } from "./utils/parseResources";
+import type { ParsedResources } from "../utils/parseResources";
+import type { Product } from "./product";
 
 // TODO? - Generate typings dynamically from Joi schemas
 
@@ -75,9 +76,8 @@ export type SearchPagination = SearchOptionTypeBase & {
 	to?: number;
 };
 
-// TODO - Type 'data' values (VTEX Catalog's product)
 export type SearchResult = {
-	data: unknown[];
+	data: Product[];
 	metadata: {
 		hasMoreResults: boolean;
 		resources: ParsedResources;

@@ -1,4 +1,4 @@
-import type { SearchOptions } from "./search.types";
+import type { SearchOptions } from "./types/search";
 import search from "./search";
 import { API } from "@app/config/api/constants";
 import debugSearch from "./utils/debug";

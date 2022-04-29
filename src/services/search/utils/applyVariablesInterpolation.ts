@@ -1,4 +1,4 @@
-import type { CommonSearchOptionsValuesAsObject } from "../search.types";
+import type { CommonSearchOptionsValuesAsObject } from "../types/search";
 
 type InterpolationOptions = {
 	inputString: string;
