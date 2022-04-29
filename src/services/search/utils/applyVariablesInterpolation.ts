@@ -1,10 +1,11 @@
 import type { CommonSearchOptionsValuesAsObject } from "../types/search";
+import type { QueryParameterOptions } from "../modules/buildQueryParams/queryParametersMap";
 
 type InterpolationOptions = {
 	inputString: string;
 	interpolationValues: CommonSearchOptionsValuesAsObject;
-	optionalVariables?: Array<string>;
-	variableDivider?: string;
+	optionalVariables?: QueryParameterOptions["optionalVariables"];
+	variableDivider?: QueryParameterOptions["variableDivider"];
 };
 
 export default function applyVariablesInterpolation({
