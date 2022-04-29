@@ -81,5 +81,6 @@ export type SearchResult = {
 	metadata: {
 		hasMoreResults: boolean;
 		resources: ParsedResources;
+		requestId: string;
 	};
 };
