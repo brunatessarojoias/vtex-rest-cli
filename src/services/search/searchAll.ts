@@ -1,72 +1,103 @@
 import type { SearchOptions } from "./search.types";
 import search from "./search";
 import { API } from "@app/config/api/constants";
+import debugSearch from "./utils/debug";
+import randomId from "./utils/randomId";
+
+const debug = debugSearch.extend("searchAll");
 
 export default async function searchAll(
 	searchOptions?: Partial<SearchOptions>
 ) {
-	const initialRequest = await search(searchOptions);
-	const { hasMoreResults, resources } = initialRequest.metadata;
+	const initialRequestId = randomId();
+	const getDebugMessage = (dataLength: number) =>
+		`Requests done. Aggregate data length: ${dataLength}`;
 
-	if (hasMoreResults) {
-		const { tail: initialTail, originTail } = resources;
-		let validatedOriginTail = originTail;
+	debug(
+		`Making initial request to get origin tail...(id: ${initialRequestId})`
+	);
 
-		if (validatedOriginTail > API.SEARCH_PAGINATION_THRESHOLD) {
-			// TODO - Warn that it won't search for all possible results
-			validatedOriginTail = API.SEARCH_PAGINATION_THRESHOLD;
-		}
+	const initialRequest = await search(searchOptions, initialRequestId);
+	const {
+		hasMoreResults,
+		resources: { tail: initialRequestTail, originTail },
+	} = initialRequest.metadata;
+	const isOriginTailGreaterThanThreshold =
+		originTail > API.SEARCH_PAGINATION_THRESHOLD;
 
-		const numberOfRequests = Math.ceil(
-			(validatedOriginTail - initialTail) / initialTail
-		);
+	if (!hasMoreResults) {
+		debug(getDebugMessage(initialRequest.data.length));
 
-		const promisesToBeSettled = new Array(numberOfRequests)
-			.fill(null)
-			.map((_, index) => {
-				const requestIteration = index + 1;
-				const paginationInterval =
-					API.SEARCH_PAGINATION_MAX_INTERVAL - 1;
-
-				const updatedFrom =
-					initialTail * requestIteration + requestIteration;
-
-				const updatedTo = updatedFrom + paginationInterval;
-
-				const updatedOptions = {
-					...searchOptions,
-					pagination: {
-						from: updatedFrom,
-						to:
-							updatedTo > validatedOriginTail
-								? validatedOriginTail
-								: updatedTo,
-					},
-				};
-
-				return () => search(updatedOptions);
-			});
-
-		const settledPromises = await Promise.allSettled(
-			promisesToBeSettled.map(func => func())
-		);
-
-		const results = settledPromises
-			.filter(promiseResult => promiseResult.status === "fulfilled")
-			.map(
-				promiseResult =>
-					/*
-					 * Check for 'fulfilled' after calling
-					 * 'Array.prototype.filter' because
-					 * TypeScript does not know about it.
-					 */
-					promiseResult.status === "fulfilled" &&
-					promiseResult.value.data
-			)
-			.flat();
-
-		return [...initialRequest.data, ...results];
+		return initialRequest.data;
 	}
 
-	return initialRequest.data;
+	debug("Origin has more results. Generating next requests...");
+
+	if (isOriginTailGreaterThanThreshold)
+		//* Add 1 to 'originTail' and 'API.SEARCH_PAGINATION_THRESHOLD'
+		//* because they are Zero-based indexes
+		debug(
+			`Origin has ${
+				originTail + 1
+			} possible results, but the API pagination is limited to ${
+				API.SEARCH_PAGINATION_THRESHOLD + 1
+			} results, you can tweak the search filters to get all results.`
+		);
+
+	const paginationCeil = isOriginTailGreaterThanThreshold
+		? API.SEARCH_PAGINATION_THRESHOLD
+		: originTail;
+	const initialPaginationInterval = API.SEARCH_PAGINATION_MAX_INTERVAL - 1;
+	const promisesToBeSettled = [];
+
+	const getPaginationInterval = (previousPagination: number) => {
+		const maybeNextPagination =
+			previousPagination + initialPaginationInterval;
+		const isGreaterThanCeil = maybeNextPagination > paginationCeil;
+
+		if (isGreaterThanCeil) return paginationCeil - previousPagination;
+
+		return initialPaginationInterval;
+	};
+
+	for (
+		let paginationFrom = initialRequestTail;
+		paginationFrom <= paginationCeil;
+		paginationFrom = paginationFrom + 1 + initialPaginationInterval
+	) {
+		const nextPaginationFrom = paginationFrom + 1;
+		const nextSearchOptions = {
+			...searchOptions,
+			pagination: {
+				from: nextPaginationFrom,
+				to:
+					nextPaginationFrom +
+					getPaginationInterval(nextPaginationFrom),
+			},
+		};
+		const unexecutedPromise = () => search(nextSearchOptions);
+
+		promisesToBeSettled.push(unexecutedPromise);
+	}
+
+	const settledPromises = await Promise.allSettled(
+		promisesToBeSettled.map(func => func())
+	);
+	const results = settledPromises
+		.filter(promiseResult => promiseResult.status === "fulfilled")
+		.map(
+			promiseResult =>
+				/*
+				 * Check for 'fulfilled' after calling
+				 * 'Array.prototype.filter' because
+				 * TypeScript does not know about it.
+				 */
+				promiseResult.status === "fulfilled" && promiseResult.value.data
+		)
+		.flat();
+	const aggregateResult = [...initialRequest.data, ...results];
+
+	debug(getDebugMessage(aggregateResult.length));
+
+	return aggregateResult;
 }
