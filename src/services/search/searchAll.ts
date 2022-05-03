@@ -1,4 +1,4 @@
-import type { SearchOptions } from "./types/search";
+import type { SearchOptions, SearchResult } from "./types/search";
 import search from "./search";
 import { API } from "@app/config/api/constants";
 import debugSearch from "./utils/debug";
@@ -87,12 +87,8 @@ export default async function searchAll(
 		.filter(promiseResult => promiseResult.status === "fulfilled")
 		.map(
 			promiseResult =>
-				/*
-				 * Check for 'fulfilled' after calling
-				 * 'Array.prototype.filter' because
-				 * TypeScript does not know about it.
-				 */
-				promiseResult.status === "fulfilled" && promiseResult.value.data
+				(promiseResult as PromiseFulfilledResult<SearchResult>).value
+					.data
 		)
 		.flat();
 	const aggregateResult = [...initialRequest.data, ...results];
