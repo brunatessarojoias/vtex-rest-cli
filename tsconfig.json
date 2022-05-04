@@ -8,7 +8,9 @@
 		"outDir": "dist",
 		"baseUrl": "src",
 		"paths": {
-			"@app/*": ["./*"]
+			"@app/*": ["./*"],
+			"@config/*": ["./config/*"],
+			"@services/*": ["./services/*"]
 		}
 	},
 	"include": ["src"],
