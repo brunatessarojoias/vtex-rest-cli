@@ -1,5 +1,5 @@
 import type { ParsedResources } from "../utils/parseResources";
-import type { Product } from "./product";
+import type { Product } from "@services/common/types/product";
 
 // TODO? - Generate typings dynamically from Joi schemas
 
