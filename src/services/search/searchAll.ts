@@ -2,7 +2,7 @@ import type { SearchOptions, SearchResult } from "./types/search";
 import search from "./search";
 import { API } from "@app/config/api/constants";
 import debugSearch from "./utils/debug";
-import randomId from "./utils/randomId";
+import randomId from "@services/common/utils/randomId";
 
 const debug = debugSearch.extend("searchAll");
 

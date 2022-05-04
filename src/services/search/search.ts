@@ -4,7 +4,7 @@ import buildQueryParams from "./modules/buildQueryParams";
 import parseResources from "./utils/parseResources";
 import type { SearchOptions, SearchResult } from "./types/search";
 import debug from "./utils/debug";
-import randomId from "./utils/randomId";
+import randomId from "@services/common/utils/randomId";
 
 const API_ENDPOINT = "catalog_system/pub/products/search";
 
