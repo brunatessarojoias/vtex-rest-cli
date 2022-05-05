@@ -2,7 +2,7 @@ import https from "https";
 import api from "@app/config/api";
 import buildQueryParams from "./modules/buildQueryParams";
 import parseResources from "./utils/parseResources";
-import type { SearchOptions, SearchResult } from "./types/search";
+import type { SearchOptions, SearchResult } from "./types";
 import debug from "./utils/debug";
 import randomId from "@services/common/utils/randomId";
 

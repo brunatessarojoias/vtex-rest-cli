@@ -1,4 +1,4 @@
-import type { CommonSearchOptionsValuesAsObject } from "../types/search";
+import type { CommonSearchOptionsValuesAsObject } from "../types";
 import type { QueryParameterOptions } from "../modules/buildQueryParams/queryParametersMap";
 
 type InterpolationOptions = {
