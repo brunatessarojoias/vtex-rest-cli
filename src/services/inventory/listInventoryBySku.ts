@@ -1,11 +1,13 @@
 import api from "@config/api";
 import debugInventory from "./utils/debug";
 import randomId from "@services/common/utils/randomId";
-import type { InventoryBySku } from "./types/inventory";
+import type { InventoryBySku } from "./types";
 
 const debug = debugInventory.extend("listInventoryBySku");
 
-const API_ENDPOINT = "logistics/pvt/inventory/skus";
+const BASE_API_ENDPOINT = "logistics/pvt/inventory/skus";
+
+const getApiEndpoint = (skuId: string) => `${BASE_API_ENDPOINT}/${skuId}`;
 
 export default async function listInventoryBySku(
 	skuId: string
@@ -13,11 +15,11 @@ export default async function listInventoryBySku(
 	try {
 		const requestId = randomId();
 
-		debug(`Requesting data for skuId: ${skuId}. (requestId: ${requestId})`);
+		debug(`Requesting data for skuId: ${skuId}... (id: ${requestId})`);
 
-		const { data } = await api(`${API_ENDPOINT}/${skuId}`);
+		const { data } = await api(getApiEndpoint(skuId));
 
-		debug(`Request done. (requestId: ${requestId})`);
+		debug(`Request successful. (id: ${requestId})`);
 
 		return data;
 	} catch (err) {
