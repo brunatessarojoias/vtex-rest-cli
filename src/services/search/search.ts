@@ -22,7 +22,7 @@ export default async function search(
 		const queryParams = buildQueryParams(searchOptions);
 
 		debug(
-			`Preparing request, parameters: %O (id: ${requestId})`,
+			`Preparing request with parameters: %O (id: ${requestId})`,
 			queryParams
 		);
 
@@ -31,11 +31,13 @@ export default async function search(
 			httpsAgent: new https.Agent({ keepAlive: true }),
 		};
 
-		debug(`Searching... (id: ${requestId})`);
+		debug(`Requesting data... (id: ${requestId})`);
 
 		const { headers, data } = await api(API_ENDPOINT, apiHeaders);
 
-		debug(`Search done, data length: ${data.length} (id: ${requestId})`);
+		debug(
+			`Request successful. Data length: ${data.length} (id: ${requestId})`
+		);
 
 		const resources = parseResources(headers.resources);
 		const hasMoreResults = resources.tail < resources.originTail;
