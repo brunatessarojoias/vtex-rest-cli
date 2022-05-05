@@ -10,3 +10,10 @@ export type SkuWarehouseBalance = {
 	reservedQuantity: number;
 	hasUnlimitedQuantity: boolean;
 };
+
+export type InventoryUpdateParameters = {
+	skuId: string;
+	warehouseId: string;
+	quantity: number;
+	unlimitedQuantity: boolean;
+};
