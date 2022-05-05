@@ -1,4 +1,4 @@
-import { searchOptionsSchema } from "./validationSchemas";
+import { searchOptionsSchema } from "../../schemas";
 import type { SearchOptions } from "../../types";
 
 // TODO - Handle Joi errors
