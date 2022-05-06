@@ -10,7 +10,8 @@
 		"paths": {
 			"@app/*": ["./*"],
 			"@config/*": ["./config/*"],
-			"@services/*": ["./services/*"]
+			"@services/*": ["./services/*"],
+			"@utils/*": ["./utils/*"]
 		}
 	},
 	"include": ["src"],
