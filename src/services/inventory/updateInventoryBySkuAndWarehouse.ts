@@ -43,6 +43,7 @@ export default async function updateInventoryBySkuAndWarehouse({
 		return {
 			data: {
 				skuId,
+				warehouseId,
 				...payload,
 			},
 			metadata: {
