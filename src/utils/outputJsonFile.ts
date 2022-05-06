@@ -7,7 +7,7 @@ const debug = debugUtils.extend("outputJsonFile");
 type Parameters = {
 	fileName: string;
 	pathName: string;
-	data: Record<string, unknown>;
+	data: Record<string, unknown> | Array<unknown>;
 	format?: boolean;
 };
 
