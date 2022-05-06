@@ -95,5 +95,10 @@ export default async function searchAll(
 
 	debug(getDebugMessage(aggregateResult.length));
 
-	return aggregateResult;
+	return {
+		data: aggregateResult,
+		metadata: {
+			...searchOptions,
+		},
+	};
 }
