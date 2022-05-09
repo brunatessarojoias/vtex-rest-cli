@@ -1,4 +1,5 @@
 import type { SearchOptions, SearchResult } from "./types";
+import type { Product } from "@services/common/types/product";
 import search from "./search";
 import { API } from "@app/config/api/constants";
 import debugSearch from "./utils/debug";
@@ -6,10 +7,16 @@ import randomId from "@services/common/utils/randomId";
 
 const debug = debugSearch.extend("searchAll");
 
+type SearchAllResult = {
+	data: Product[] | undefined;
+	metadata: Partial<SearchOptions>;
+};
+
 export default async function searchAll(
 	searchOptions?: Partial<SearchOptions>
-) {
+): Promise<SearchAllResult> {
 	const initialRequestId = randomId();
+
 	const getDebugMessage = (dataLength: number) =>
 		`Requests done. Aggregate data length: ${dataLength}`;
 
@@ -22,13 +29,21 @@ export default async function searchAll(
 		hasMoreResults,
 		resources: { tail: initialRequestTail, originTail },
 	} = initialRequest.metadata;
+
 	const isOriginTailGreaterThanThreshold =
 		originTail > API.SEARCH_PAGINATION_THRESHOLD;
 
 	if (!hasMoreResults) {
 		debug(getDebugMessage(initialRequest.data.length));
 
-		return initialRequest.data;
+		const result: SearchAllResult = {
+			data: initialRequest.data,
+			metadata: {
+				...searchOptions,
+			},
+		};
+
+		return result;
 	}
 
 	debug("Origin has more results. Generating next requests...");
@@ -75,14 +90,12 @@ export default async function searchAll(
 					getPaginationInterval(nextPaginationFrom),
 			},
 		};
-		const unexecutedPromise = () => search(nextSearchOptions);
 
-		promisesToBeSettled.push(unexecutedPromise);
+		promisesToBeSettled.push(search(nextSearchOptions));
 	}
 
-	const settledPromises = await Promise.allSettled(
-		promisesToBeSettled.map(func => func())
-	);
+	const settledPromises = await Promise.allSettled(promisesToBeSettled);
+
 	const results = settledPromises
 		.filter(promiseResult => promiseResult.status === "fulfilled")
 		.map(
@@ -91,14 +104,17 @@ export default async function searchAll(
 					.data
 		)
 		.flat();
+
 	const aggregateResult = [...initialRequest.data, ...results];
 
 	debug(getDebugMessage(aggregateResult.length));
 
-	return {
+	const result: SearchAllResult = {
 		data: aggregateResult,
 		metadata: {
 			...searchOptions,
 		},
 	};
+
+	return result;
 }
