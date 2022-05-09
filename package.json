@@ -1,5 +1,5 @@
 {
-	"name": "clear-inventory",
+	"name": "vtex-rest-cli",
 	"version": "1.0.0",
 	"license": "MIT",
 	"type": "module",
