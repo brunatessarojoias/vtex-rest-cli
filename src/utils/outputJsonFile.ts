@@ -29,7 +29,9 @@ export default async function outputJsonFile({
 		const filePath = path.normalize(`${pathName}/${fileNameWithExt}`);
 
 		debug(
-			`Saving JSON file '${fileNameWithExt}' in directory '${pathName}'.`
+			`Saving JSON file '${fileNameWithExt}' in directory '${path.normalize(
+				pathName
+			)}'.`
 		);
 
 		const options = {
@@ -38,7 +40,7 @@ export default async function outputJsonFile({
 
 		await fs.outputJson(filePath, data, options);
 
-		debug(`File '${fileNameWithExt}' saved successfully.`);
+		debug(`File '${filePath}' saved successfully.`);
 
 		return filePath;
 	} catch (err) {
